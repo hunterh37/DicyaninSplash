@@ -1,3 +1,4 @@
+#if os(visionOS)
 import ShaderGraphCoder
 import RealityKit
 
@@ -45,3 +46,5 @@ public func makeWiremeshCyberGreenShader() async throws -> ShaderGraphMaterial {
         opacity: SGValue.float(1.0)
     ))
 }
+
+#endif
