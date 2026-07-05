@@ -14,7 +14,7 @@ let package = Package(
         )
     ],
     dependencies: [
-        .package(url: "https://github.com/praeclarum/ShaderGraphCoder", branch: "main")
+        .package(url: "https://github.com/praeclarum/ShaderGraphCoder", exact: "2.0.0")
     ],
     targets: [
         .target(
