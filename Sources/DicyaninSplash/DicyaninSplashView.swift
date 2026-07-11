@@ -10,6 +10,8 @@ import RealityKit
 /// ``SplashConfiguration`` and react in `onFinished`.
 public struct DicyaninSplashView: View {
     private let configuration: SplashConfiguration
+    private let logoSceneWidth: CGFloat
+    private let logoSceneHeight: CGFloat
     private let onFinished: () -> Void
 
     @State private var loadProgress: Double = 0
@@ -19,8 +21,15 @@ public struct DicyaninSplashView: View {
     @State private var logoAppear = false
     @State private var glitching = false
 
-    public init(configuration: SplashConfiguration, onFinished: @escaping () -> Void) {
+    public init(
+        configuration: SplashConfiguration,
+        logoSceneWidth: CGFloat = 780,
+        logoSceneHeight: CGFloat = 320,
+        onFinished: @escaping () -> Void
+    ) {
         self.configuration = configuration
+        self.logoSceneWidth = logoSceneWidth
+        self.logoSceneHeight = logoSceneHeight
         self.onFinished = onFinished
     }
 
@@ -34,7 +43,7 @@ public struct DicyaninSplashView: View {
 
                 if let builder = configuration.logoSceneBuilder {
                     SplashEntityScene(builder: { await builder(theme) })
-                        .frame(maxWidth: 780, maxHeight: 320)
+                        .frame(maxWidth: logoSceneWidth, maxHeight: logoSceneHeight)
                         .padding(.bottom, 120)
                 }
 
