@@ -1,5 +1,9 @@
 import RealityKit
+#if canImport(UIKit)
 import UIKit
+#elseif canImport(AppKit)
+import AppKit
+#endif
 
 public extension Entity {
     /// Recursively replaces all materials on `ModelEntity` descendants with an unlit

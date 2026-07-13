@@ -1,11 +1,13 @@
-#if os(iOS)
 import SwiftUI
+#if canImport(CoreMotion)
 import CoreMotion
+#endif
 
-/// Custom iOS launch splash: the app logo floats at the center of a wireframe
-/// cyber-green cube interior. Device tilt (CoreMotion) plus a slow idle drift
-/// shift the vanishing point so it feels like peering inside a 3D cube, with
-/// glossy corner highlights and translucent glossy sidewalls.
+/// Custom launch splash: the app logo floats at the center of a wireframe
+/// cyber-green cube interior. On iOS device tilt (CoreMotion), on macOS the
+/// pointer position, plus a slow idle drift shift the vanishing point so it
+/// feels like peering inside a 3D cube, with glossy corner highlights and
+/// translucent glossy sidewalls.
 ///
 /// Drop-in and asset-agnostic: pass the logo image name (resolved from the host
 /// app's asset catalog), an accent color, and a hold duration.
@@ -37,9 +39,12 @@ public struct CubeLaunchSplashView: View {
     public var body: some View {
         GeometryReader { geo in
             let size = geo.size
+            // Automatic subtle camera pan: a slow elliptical drift of the
+            // vanishing point. On iOS device tilt adds to it; on macOS this is
+            // the whole effect, giving a gentle cinematic peer-into-the-cube.
             let idle = CGPoint(
-                x: sin(drift * .pi * 2) * 14,
-                y: cos(drift * .pi * 2) * 10
+                x: sin(drift * .pi * 2) * 30,
+                y: cos(drift * .pi * 2) * 20
             )
             let tilt = CGPoint(
                 x: motion.offset.x * 60 + idle.x,
@@ -94,7 +99,7 @@ public struct CubeLaunchSplashView: View {
         motion.start()
         withAnimation(.spring(response: 0.9, dampingFraction: 0.75)) { appear = true }
         withAnimation(.easeInOut(duration: 1.6).repeatForever(autoreverses: true)) { logoPulse = true }
-        withAnimation(.linear(duration: 9).repeatForever(autoreverses: false)) { drift = 1 }
+        withAnimation(.linear(duration: 12).repeatForever(autoreverses: false)) { drift = 1 }
         DispatchQueue.main.asyncAfter(deadline: .now() + holdDuration) { skip() }
     }
 
@@ -283,11 +288,14 @@ private struct CubeInteriorView: View {
 }
 
 /// Lightweight device-tilt provider for the parallax effect. Normalized
-/// roll/pitch, smoothed, in the range of roughly -1...1.
+/// roll/pitch, smoothed, in the range of roughly -1...1. On platforms without
+/// CoreMotion device motion (e.g. macOS) it stays at zero, so the automatic
+/// camera pan (idle drift) drives the effect on its own.
 private final class SplashMotion: ObservableObject {
 
     @Published var offset: CGPoint = .zero
 
+#if canImport(CoreMotion) && os(iOS)
     private let manager = CMMotionManager()
 
     func start() {
@@ -308,5 +316,8 @@ private final class SplashMotion: ObservableObject {
     func stop() {
         manager.stopDeviceMotionUpdates()
     }
-}
+#else
+    func start() {}
+    func stop() {}
 #endif
+}

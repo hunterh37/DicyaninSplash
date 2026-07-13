@@ -1,13 +1,13 @@
 {
-  "originHash" : "3d6d216ac755f0409f342f04dad7842745dd838ca69ba0c97920efe3a5dd7936",
+  "originHash" : "122dd316f8099c1eb801571d08af42ebc6d70bc5e644c8a86de220b678703125",
   "pins" : [
     {
       "identity" : "shadergraphcoder",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/praeclarum/ShaderGraphCoder",
       "state" : {
-        "branch" : "main",
-        "revision" : "069cc5a5d4477ca15fb1bb5bd79c758634cd4c99"
+        "revision" : "d53fdc36e3b598d278388acdbaaebbb0984abc93",
+        "version" : "2.0.0"
       }
     }
   ],

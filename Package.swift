@@ -5,7 +5,8 @@ let package = Package(
     name: "DicyaninSplash",
     platforms: [
         .visionOS(.v2),
-        .iOS(.v18)
+        .iOS(.v18),
+        .macOS(.v15)
     ],
     products: [
         .library(
